@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load extras %}
+
+{% block title %}CTF Site for EAST Branch{% endblock title %}
+
+{% block extrahead %}
+<style>
+</style>
+{% endblock %}
+
+{% block jumbotran_main %}
+<img src="{% static 'images/emp_good_job.png' %}"
+  style="margin-right: 20px;" /> <span style='color: black;'>&nbsp;CTF&nbsp;</span>
+<img src="{% static 'images/emp_qustion.png' %}" style="margin-right: 20px;" />
+{% endblock %}
+
+{% block jumbotran_sub %}
+~ Catch The Flag for Master of Security ~
+{% endblock %}
+
+{% block content %}
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th class="text-left">#</th>
+			<th class="text-center">タイトル</th>
+			<th class="text-center">ポイント</th>
+			<th class="text-center">ジャンル</th>
+			<th class="text-center">ヒント１</th>
+			<th class="text-center">ヒント２</th>
+			<th class="text-center">解説</th>
+		</tr>
+	</thead>
+	<tbody>
+    {% for q in questions %}
+    <tr>
+      <td>{{q.disp_no}}</td>
+      <td><a href="{% url 'show' q.id %}">{{q.title}}</a></td>
+      <td class="text-center">{{q|valid_point}}</td>
+      <td class="text-center">{{q.genre}}</td>
+      <td class="text-center">
+        {% if q.hint1 %}
+        <span th:case="*" class="glyphicon glyphicon-education" style="color: blue;"></span>
+        {% else %}
+        <span>無</span>
+        {% endif %}
+      </td>
+      <td class="text-center">
+        {% if q.hint2 %}
+        <span th:case="*" class="glyphicon glyphicon-education" style="color: blue;"></span>
+        {% else %}
+        <span>無</span>
+        {% endif %}
+      </td>
+      <td class="text-center">
+        {% if q.answer %}
+        <span th:case="*" class="glyphicon glyphicon-education" style="color: blue;"></span>
+        {% else %}
+        <span>無</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+	</tbody>
+</table>
+<script type="text/javascript"></script>
+{% endblock content %}

@@ -1,0 +1,11 @@
+python manage.py runserver
+python manage.py migrate
+python manage.py makemigrations ctf
+python manage.py createsuperuser
+Username: admin
+Email adress: admin@foo.com
+Password: xxxxxxxx
+sudo pip install django-debug-toolbar
+sudo pip install python-redmine
+sudo pip install pytz
+python manage.py redmine_migration

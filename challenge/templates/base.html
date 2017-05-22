@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{% block title %}Site Title{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.gif' %}">
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block extrahead %}{% endblock %}
+</head>
+<body>
+  <div class='container' style="padding-bottom: 51px;">
+  	<div class='jumbotron text-center'>
+      <h1>
+      {% block jumbotran_main %}
+        {{ jumbotran_main }}
+      {% endblock %}
+      </h1>
+      <p>
+      {% block jumbotran_sub %}
+        {{ jumbotran_sub }}
+      {% endblock %}
+      </p>
+  	</div>
+    {% block content %}
+    <div>{{ content }}</div>
+    {% endblock %}
+  </div>
+  <nav class="navbar navbar-default navbar-fixed-bottom">
+  	<div class="container">
+  		<a class="navbar-brand" href="{url ctf.index}">CTF TOP</a>
+  	    <ul class="nav navbar-nav">
+        		<li><a href="https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3%E3%83%BC%E3%83%BB%E3%82%B6%E3%83%BB%E3%83%95%E3%83%A9%E3%83%83%E3%82%B0" target="_blank">CTFとは（Wikipedia）</a></li>
+      		</ul>
+  	    <p class="navbar-text navbar-right">Copyright(c) 2016 Team - L.O.V.E Injection and our Frends - from SENDAI.</p>
+  	</div>
+  </nav>
+</body>
+</html>
