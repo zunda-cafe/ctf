@@ -36,7 +36,7 @@
     {% for q in questions %}
     <tr>
       <td>{{q.disp_no}}</td>
-      <td><a href="{% url 'show' q.id %}">{{q.title}}</a></td>
+      <td><a href="{% url 'question.show' q.id %}">{{q.title}}</a></td>
       <td class="text-center">{{q|valid_point}}</td>
       <td class="text-center">{{q.genre}}</td>
       <td class="text-center">

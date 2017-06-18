@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load extras %}
+{% load bootstrap %}
+
+{% block title %}CTF Site for EAST Branch{% endblock title %}
+
+{% block extrahead %}
+<style>
+</style>
+{% endblock %}
+{% block jumbotran_main %}
+<img src="{% static 'images/question_f.png' %}"
+  style="margin-right: 20px;" />
+<span style='color: black;'>#{{ question.disp_no }}&nbsp;{{ question.title }}</span>
+
+{% endblock %}
+
+{% block jumbotran_sub %}
+{{ question.genre }} {{ question.valid_point}}point
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<p style="padding: 0px, 10px, 0px, 10px;" >{{ quetion.content}}</p>
+
+		<div class="panel-group" id="accordion" role="tablist"
+					aria-multiselectable="true">
+      {% if question.hint1 != '' %}
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingOne">
+					<h4 class="panel-title">
+						<a role="button" data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne" aria-expanded="true"
+									aria-controls="collapseOne"><span class="glyphicon glyphicon-education" style="color: blue;"></span>&nbsp;ヒント1</a>
+					</h4>
+				</div>
+				<div id="collapseOne" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="headingOne">
+					<div class="panel-body">{{ question.hint1 }}</div>
+				</div>
+			</div>
+      {% endif %}
+
+      {% if question.hint2 != '' %}
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingTwo">
+					<h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseTwo"
+									aria-expanded="false" aria-controls="collapseTwo">
+							<span class="glyphicon glyphicon-education" style="color: blue;"></span>&nbsp;ヒント2</a>
+					</h4>
+				</div>
+  			<div id="collapseTwo" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingTwo">
+				  <div class="panel-body">{{ question.hint2 }}</div>
+			  </div>
+		  </div>
+      {% endif %}
+
+      {% if question.answer != '' %}
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingThree">
+					<h4 class="panel-title">
+						<a class="collapsed" role="button" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseThree"
+									aria-expanded="false" aria-controls="collapseThree">
+									<span class="glyphicon glyphicon-education" style="color: blue;"></span>&nbsp;解説</a>
+					</h4>
+				</div>
+				<div id="collapseThree" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingThree">
+					<div class="panel-body">{{ question.answer }}</div>
+				</div>
+			</div>
+      {% endif %}
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>
+<div class="text-center">
+	<form id="ans_form" method="post" action="{% url 'question.show' question_id=question.id %}">
+    {% csrf_token %}
+    <span>FLAG ： </span> {{ form.flag }} <span>&nbsp;</span>
+		<input type="submit" value="送信" onClick="inputCookie()" />
+	</form>
+</div>
+<div class="text-center">
+	<hr />
+	<a href="{% url 'index' %}">問題一覧に戻る</a>
+	<p />
+	<ul class="list-unstyled">
+    {% for w in winners %}
+		<li>「{{ w.name }}」 さんが正解しました。得点は {{ w.point }} 点です。</li>
+    {% endfor %}
+	</ul>
+</div>
+<script type="text/javascript">
+	/*<![CDATA[*/
+	var nickName;
+	$(document).ready(function() {
+	});
+
+	function inputCookie() {
+    flag = document.getElementById("id_flag").value;
+    if (flag == ""){
+      return;
+    }
+		nickName = getCookie('NickName');
+		if ("" == nickName) {
+			var message = "ハンドルネームの登録にご協力をお願いします。\n"
+					+ "（必須ではありません）（クッキー保存）" + "";
+			nickName = prompt(message, "");
+			if (nickName != null) {
+				setCookie('NickName', nickName, 365);
+			}
+		}
+	}
+	function setCookie(c_name, value, expiredays) {
+		// pathの指定
+		var path = location.pathname;
+		// pathをフォルダ毎に指定する場合のIE対策
+		var paths = new Array();
+		paths = path.split("/");
+		if (paths[paths.length - 1] != "") {
+			paths[paths.length - 1] = "";
+			path = paths.join("/");
+		}
+		// 有効期限の日付
+		var extime = new Date().getTime();
+		var cltime = new Date(extime
+				+ (60 * 60 * 24 * 1000 * expiredays));
+		var exdate = cltime.toUTCString();
+		// クッキーに保存する文字列を生成
+		var s = "";
+		s += c_name + "=" + encodeURIComponent(value);
+		//s += c_name + "=" + escape(value);// 値はエンコードしておく
+		s += "; path=" + path;
+		if (expiredays) {
+			s += "; expires=" + exdate + "; ";
+		} else {
+			s += "; ";
+		}
+		// クッキーに保存
+		document.cookie = s;
+	}
+
+	// クッキーの値を取得 getCookie(クッキー名); //
+	function getCookie(c_name) {
+		var st = "";
+		var ed = "";
+		if (document.cookie.length > 0) {
+			// クッキーの値を取り出す
+			st = document.cookie.indexOf(c_name + "=");
+			if (st != -1) {
+				st = st + c_name.length + 1;
+				ed = document.cookie.indexOf(";", st);
+				if (ed == -1)
+					ed = document.cookie.length;
+				// 値をデコードして返す
+				return unescape(document.cookie.substring(st, ed));
+			}
+		}
+		return "";
+	}
+	/*]]>*/
+</script>
+
+{% endblock content %}

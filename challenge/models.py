@@ -60,15 +60,43 @@ class Question(models.Model):
     def __str__(self):
         return self.title
 
+    def valid_point(self):
+        """
+        現在の点数を計算する
+
+        >>> q = Question.objects.create(point=500)
+        >>> q.valid_point()
+        500
+        >>> q.hint1 = "hint1"
+        >>> q.save()
+        >>> q.valid_point()
+        400
+        >>> q.hint2 = "hint2"
+        >>> q.save()
+        >>> q.valid_point()
+        250
+        >>> q.answer = "answer"
+        >>> q.save()
+        >>> q.valid_point()
+        0
+        """
+        vp = self.point
+        if self.answer != "":
+            vp = 0
+        elif self.hint1 != "" and self.hint2 == "":
+            vp = round(self.point * 0.8)
+        elif self.hint1 != "" and self.hint2 != "":
+            vp = round(self.point * 0.5)
+        return vp
+
     class Meta(object):
         verbose_name = '問題'
         verbose_name_plural = '問題'
 
 class Winner(models.Model):
-
     name = models.CharField('ハンドル名', max_length=1024)
     point = models.IntegerField('点数')
-    answered_at = models.DateTimeField('回答日時')
+    answered_at = models.DateTimeField('回答日時', auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     created_at = models.DateTimeField('作成日時', auto_now_add=True)
     updated_at = models.DateTimeField('更新日時', auto_now=True)

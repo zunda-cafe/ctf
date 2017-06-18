@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load extras %}
+{% load bootstrap %}
+
+{% block title %}CTF Site for EAST Branch{% endblock title %}
+
+{% block extrahead %}
+<style>
+</style>
+{% endblock %}
+{% block jumbotran_main %}
+<img src="{% static 'images/question_f.png' %}"
+  style="margin-right: 20px;" />
+<span style='color: black;'>#{{ question.disp_no }}&nbsp;{{ question.title }}</span>
+
+{% endblock %}
+
+{% block jumbotran_sub %}
+{{ question.genre }} {{ question.valid_point}}point
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center">
+	<h1>正解です!</h1>
+	<img src="{% static 'images/good.png' %}"/>
+	<hr/>
+	<a href="{% url 'question.show' question.id %}">問題に戻る</a>
+</div>
+
+{% endblock content %}
