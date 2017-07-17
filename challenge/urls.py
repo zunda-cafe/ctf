@@ -8,4 +8,6 @@ urlpatterns = [
     url(r'^question/(?P<question_id>\d+)$', views.show, name='question.show'),
     url(r'^question/(?P<question_id>\d+)/good$', views.good, name='question.good'),
     url(r'^question/(?P<question_id>\d+)/mistake$', views.mistake, name='question.mistake'),
+    url(r'^ranking$', views.ranking, name='ranking'),
+
 ]

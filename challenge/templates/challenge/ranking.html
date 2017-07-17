@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load extras %}
+
+{% block title %}CTF Site for EAST Branch{% endblock title %}
+
+{% block extrahead %}
+<style>
+</style>
+{% endblock %}
+
+
+{% block jumbotran_main %}
+<img src="{% static 'images/emp_good_job.png' %}"
+  style="margin-right: 20px;" /> <span style='color: black;'>&nbsp;CTF&nbsp;</span>
+<img src="{% static 'images/emp_qustion.png' %}" style="margin-right: 20px;" />
+{% endblock %}
+
+{% block jumbotran_sub %}
+~ Catch The Flag for Master of Security ~
+{% endblock %}
+
+{% block content %}
+<table class="table table-hover">
+    <tr>
+        <td>名前</td>
+        <td>総合得点</td>
+    </tr>
+    <tr>
+    {% for r in rankings %}
+      <td>{{r.name}}</td>
+      <td>{{r.point}}</td>
+    </tr>
+      {% endfor %}
+</table>
+
+<div class="text-center">
+	<hr />
+	<a href="{% url 'index' %}">問題一覧に戻る</a>
+</div>
+
+
+<script type="text/javascript"></script>
+{% endblock content %}

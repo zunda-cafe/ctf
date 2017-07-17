@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.db.models import Sum
 from challenge.models import Question
 from challenge.models import Winner
 from challenge.forms import QuestionForm
@@ -12,6 +13,14 @@ def index(request):
     return render(request,
                   'challenge/index.html',
                   {'questions': questions})
+
+def ranking(request):
+    rankings = Winner.objects.values('name').annotate(point = Sum('point')).order_by('-point')
+    #print(rankings)
+    return render(request,
+                  'challenge/ranking.html',
+                  {'rankings': rankings})
+
 
 def show(request, question_id):
     question = Question.objects.get(pk=question_id)
@@ -47,3 +56,4 @@ def mistake(request, question_id):
     question = Question.objects.get(pk=question_id)
     return render(request, 'challenge/mistake.html',
                   {'question': question})
+
